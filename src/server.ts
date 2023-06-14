@@ -25,8 +25,8 @@ io.on('connection', () => {
 mongoose.connect(process.env.MONGODB_URL ? process.env.MONGODB_URL : '')
 	.then(() => {
 		console.log('connected mongodb');
-		httpServer.listen(process.env.PORT ? process.env.PORT : 3000, () => {
-			console.log(`app is running in port ${process.env.PORT ? process.env.PORT : 3000}`);
+		httpServer.listen(process.env.PORT ? process.env.PORT : 4000, () => {
+			console.log(`app is running in port ${process.env.PORT ? process.env.PORT : 4000}`);
 		});
 	})
 	.catch(err => {

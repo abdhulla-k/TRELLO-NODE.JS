@@ -8,14 +8,22 @@ import {createServer} from 'http';
 import {Server} from 'socket.io';
 // Import mongodb
 import mongoose from 'mongoose';
+// Import body parser
+import bodyParser from 'body-parser';
+
+import * as usersController from './controllers/users';
 
 const app = express();
 const httpServer = createServer(app);
 const io = new Server();
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 app.get('/', (req, res, next) => {
 	res.send('welcome to application');
 });
+
+app.post('/api/users', usersController.register);
 
 io.on('connection', () => {
 	console.log('connected');

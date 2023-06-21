@@ -10,5 +10,5 @@ export interface User {
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export interface UserDocument extends User, Document {
-	validatePassword(param1: string): string;
+	validatePassword(param1: string): Promise<boolean>;
 }

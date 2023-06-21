@@ -28,8 +28,8 @@ const userSchema = new mongoose.Schema<UserDocument>({
 // The purpose is to hash the password
 userSchema.pre('save', async function (next) {
 	// Don't want to has if the password not modified
-	if (this.isModified('password')) {
-		next();
+	if (!this.isModified('password')) {
+		return next();
 	}
 
 	try {

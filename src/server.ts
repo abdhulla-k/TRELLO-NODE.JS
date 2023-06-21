@@ -24,6 +24,7 @@ app.get('/', (req, res, next) => {
 });
 
 app.post('/api/users', usersController.register);
+app.post('/api/users/login', usersController.login);
 
 io.on('connection', () => {
 	console.log('connected');

@@ -29,7 +29,8 @@ const userSchema = new mongoose.Schema<UserDocument>({
 userSchema.pre('save', async function (next) {
 	// Don't want to has if the password not modified
 	if (!this.isModified('password')) {
-		return next();
+		next();
+		return;
 	}
 
 	try {

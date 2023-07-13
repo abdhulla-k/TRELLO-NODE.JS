@@ -10,6 +10,8 @@ import {Server} from 'socket.io';
 import mongoose from 'mongoose';
 // Import body parser
 import bodyParser from 'body-parser';
+// Import corse
+import cors from 'cors';
 
 import * as usersController from './controllers/users';
 import * as authMiddleware from './middlewares/auth';
@@ -17,6 +19,9 @@ import * as authMiddleware from './middlewares/auth';
 const app = express();
 const httpServer = createServer(app);
 const io = new Server();
+
+// Set cross origin resorce sharing
+app.use(cors());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));

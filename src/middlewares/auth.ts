@@ -1,8 +1,12 @@
-import {type NextFunction, type Response} from 'express';
+/* eslint-disable @typescript-eslint/consistent-type-imports */
+import { type NextFunction, type Response } from 'express';
 import jwt from 'jsonwebtoken';
 import UserModel from '../models/user';
-import {type ExpressRequestInterface} from '../types/expressRequest.interface';
-export default async (req: ExpressRequestInterface, res: Response, next: NextFunction) => {
+import { ExpressRequestInterface } from '../types/expressRequest.interface';
+
+
+
+export const verifyToken = async (req: ExpressRequestInterface, res: Response, next: NextFunction) => {
 	try {
 		// Take the token from headers and make sure user provided it
 		const authHeader = req.headers.authorization;
@@ -19,7 +23,7 @@ export default async (req: ExpressRequestInterface, res: Response, next: NextFun
 			return res.status(500);
 		}
 
-		const data = jwt.verify(token, process.env.SECRET_KEY) as {id: string; email: string};
+		const data = jwt.verify(token, process.env.SECRET_KEY) as { id: string; email: string };
 
 		// Find user details from db and make sure the existance of user
 		const user = await UserModel.findById(data.id);

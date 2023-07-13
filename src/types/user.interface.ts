@@ -1,7 +1,7 @@
 import type {Document} from 'mongoose';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export interface User {
+interface User {
 	email: string;
 	username: string;
 	password: string;

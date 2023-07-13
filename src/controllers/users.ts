@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/object-curly-spacing */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import type { Request, Response, NextFunction } from 'express';
+import { type ExpressRequestInterface } from '../types/expressRequest.interface';
 import UserModel from '../models/user';
 import type { UserDocument } from '../types/user.interface';
 import { Error } from 'mongoose';
@@ -89,4 +90,12 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 
 		next(err);
 	}
+};
+
+// Function to get current or login user details
+export const currentUser = async (req: ExpressRequestInterface, res: Response, next: NextFunction) => {
+	if(!req.user) return res.sendStatus(401);
+	
+	// Take user details from reques object and return it
+	res.send(normalizeUser(req.user));
 };

@@ -9,7 +9,7 @@ import { ExpressRequestInterface } from '../types/expressRequest.interface';
 export const verifyToken = async (req: ExpressRequestInterface, res: Response, next: NextFunction) => {
 	try {
 		// Take the token from headers and make sure user provided it
-		const authHeader = req.headers.authorization;
+		const authHeader = String(req.headers.authorizations);
 
 		if (!authHeader) {
 			return res.sendStatus(401);

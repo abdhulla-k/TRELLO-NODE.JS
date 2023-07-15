@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/consistent-type-imports */
 import { type NextFunction, type Response } from 'express';
 import jwt from 'jsonwebtoken';
 import UserModel from '../models/user';

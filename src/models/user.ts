@@ -43,7 +43,6 @@ userSchema.pre('save', async function (next) {
 		// Call next to save the password
 		next();
 	} catch (err) {
-		// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
 		return next(err as Error);
 	}
 });
@@ -51,7 +50,6 @@ userSchema.pre('save', async function (next) {
 // Create a functon to validate password when login in a user
 userSchema.methods.validatePassword = async function (password: string) {
 	// Compare using bcrypt module and return the value
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 	return bcryptjs.compare(password, this.password);
 };
 

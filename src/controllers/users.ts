@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/object-curly-spacing */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import type { Request, Response, NextFunction } from 'express';
 import { type ExpressRequestInterface } from '../types/expressRequest.interface';
 import UserModel from '../models/user';

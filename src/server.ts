@@ -3,9 +3,9 @@ import 'dotenv/config';
 // Import express
 import express from 'express';
 // Import createServer function from http module
-import {createServer} from 'http';
+import { createServer } from 'http';
 // Import Server from socket.io module
-import {Server} from 'socket.io';
+import { Server } from 'socket.io';
 // Import mongodb
 import mongoose from 'mongoose';
 // Import body parser
@@ -13,8 +13,10 @@ import bodyParser from 'body-parser';
 // Import corse
 import cors from 'cors';
 
+// Import controllers
 import * as usersController from './controllers/users';
 import * as authMiddleware from './middlewares/auth';
+import * as boardsController from './controllers/boards';
 
 const app = express();
 const httpServer = createServer(app);
@@ -24,17 +26,30 @@ const io = new Server();
 app.use(cors());
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/', (req, res, next) => {
 	res.send('welcome to application');
 });
 
+// Define routes
+// User register
 app.post('/api/users', usersController.register);
+
+// User login
 app.post('/api/users/login', usersController.login);
+
+// Get user details
 app.get(
 	'/api/user',
 	authMiddleware.verifyToken,
 	usersController.currentUser,
+);
+
+// Get boards
+app.get(
+	'/api/boards',
+	authMiddleware.verifyToken,
+	boardsController.getBoards,
 );
 
 io.on('connection', () => {

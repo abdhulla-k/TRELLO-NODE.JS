@@ -52,6 +52,13 @@ app.get(
 	boardsController.getBoards,
 );
 
+// Create new board
+app.post(
+	'/api/boards',
+	authMiddleware.verifyToken,
+	boardsController.createBoard,
+);
+
 io.on('connection', () => {
 	console.log('connected');
 });

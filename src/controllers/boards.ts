@@ -55,3 +55,32 @@ export const createBoard = async (
     next(err)
   }
 }
+
+// Function to get details of a single board
+export const getBoard = async (
+  req: ExpressRequestInterface,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+     // Make sure user logged in
+     if (!req.user) {
+      throw res.sendStatus(401);
+    }
+
+    // Make sure board id provided
+    if (!req.params['boardId']) throw new Error('board not missing');
+
+    // Get board id
+    const boardId = req.params['boardId'];
+
+    // Get board details
+    const board = await BoardModel.findById(boardId);
+
+    // Send data back
+    res.send(board);
+  } catch (err) {
+    // Handle error
+    next(err)
+  }
+} 

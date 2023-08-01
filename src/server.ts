@@ -52,6 +52,13 @@ app.get(
 	boardsController.getBoards,
 );
 
+// Get boards
+app.get(
+	'/api/boards/:boardId',
+	authMiddleware.verifyToken,
+	boardsController.getBoard,
+);
+
 // Create new board
 app.post(
 	'/api/boards',

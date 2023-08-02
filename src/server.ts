@@ -17,6 +17,7 @@ import cors from 'cors';
 import * as usersController from './controllers/users';
 import * as authMiddleware from './middlewares/auth';
 import * as boardsController from './controllers/boards';
+import { SocketEventsEnum } from './types/socketEvents.enum';
 
 const app = express();
 const httpServer = createServer(app);
@@ -73,8 +74,13 @@ app.post(
 	boardsController.createBoard,
 );
 
-io.on('connection', () => {
-	console.log('connected');
+io.on('connection', (socket) => {
+	socket.on(
+		SocketEventsEnum.boardsJoin,
+		(data) => {
+			boardsController.joinBoard(io, socket, data);
+		}
+	)
 });
 
 // Connect with mongodb and make the application listenable

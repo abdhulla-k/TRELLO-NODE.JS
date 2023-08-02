@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { ExpressRequestInterface } from "../types/expressRequest.interface";
 import BoardModel from '../models/board';
+import { Server, Socket } from "socket.io";
 
 // Function to get all boards. (boards list)
 export const getBoards = async (
@@ -63,8 +64,8 @@ export const getBoard = async (
   next: NextFunction,
 ) => {
   try {
-     // Make sure user logged in
-     if (!req.user) {
+    // Make sure user logged in
+    if (!req.user) {
       throw res.sendStatus(401);
     }
 
@@ -83,4 +84,14 @@ export const getBoard = async (
     // Handle error
     next(err)
   }
-} 
+}
+
+// Function to join into a socket room
+export const joinBoard = async (
+  io: Server,
+  socket: Socket,
+  data: { boardId: string },
+) => {
+  // Join to room. (room's name is boardId. it is unique id from mongodb)
+  socket.join(data.boardId);
+}

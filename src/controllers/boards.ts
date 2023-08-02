@@ -95,3 +95,13 @@ export const joinBoard = async (
   // Join to room. (room's name is boardId. it is unique id from mongodb)
   socket.join(data.boardId);
 }
+
+// Function to leave a board
+export const leaveBoard = async (
+  io: Server,
+  socket: Socket,
+  data: { boardId: string },
+) => {
+  // Leave from board (socket room)
+  socket.leave(data.boardId);
+}

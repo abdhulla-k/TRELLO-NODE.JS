@@ -74,11 +74,21 @@ app.post(
 	boardsController.createBoard,
 );
 
+// Establish io connection
 io.on('connection', (socket) => {
+	// Event handler for join board (room)
 	socket.on(
 		SocketEventsEnum.boardsJoin,
 		(data) => {
 			boardsController.joinBoard(io, socket, data);
+		}
+	);
+
+	// Event handler for leave board (room)
+	socket.on(
+		SocketEventsEnum.boardsLeave,
+		(data) => {
+			boardsController.leaveBoard(io, socket, data);
 		}
 	)
 });

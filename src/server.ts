@@ -20,7 +20,14 @@ import * as boardsController from './controllers/boards';
 
 const app = express();
 const httpServer = createServer(app);
-const io = new Server();
+const io = new Server(
+	httpServer,
+	{
+		cors: {
+			origin: '*',
+		},
+	}
+);
 
 // Set cross origin resorce sharing
 app.use(cors());

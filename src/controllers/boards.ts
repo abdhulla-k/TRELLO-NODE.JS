@@ -1,7 +1,8 @@
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
 import { ExpressRequestInterface } from "../types/expressRequest.interface";
 import BoardModel from '../models/board';
-import { Server, Socket } from "socket.io";
+import { Server } from "socket.io";
+import { Socket } from '../types/socket.interfact';
 
 // Function to get all boards. (boards list)
 export const getBoards = async (

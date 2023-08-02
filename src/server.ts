@@ -1,23 +1,36 @@
 // Import dotenv
 import 'dotenv/config';
+
 // Import express
 import express from 'express';
+
 // Import createServer function from http module
 import { createServer } from 'http';
+
 // Import Server from socket.io module
 import { Server } from 'socket.io';
+
+// Import jwt
+import jwt from 'jsonwebtoken'
+
 // Import mongodb
 import mongoose from 'mongoose';
+
 // Import body parser
 import bodyParser from 'body-parser';
+
 // Import corse
 import cors from 'cors';
+
+// Import user model
+import User from './models/user';
 
 // Import controllers
 import * as usersController from './controllers/users';
 import * as authMiddleware from './middlewares/auth';
 import * as boardsController from './controllers/boards';
 import { SocketEventsEnum } from './types/socketEvents.enum';
+import { Socket } from './types/socket.interfact';
 
 const app = express();
 const httpServer = createServer(app);
@@ -75,7 +88,39 @@ app.post(
 );
 
 // Establish io connection
-io.on('connection', (socket) => {
+io.use(async (socket: Socket, next) => {
+	try {
+		// Get token from hand shake
+		const token = (socket.handshake.auth.token as string) ?? "";
+
+		// Make sure secret key provided in .env
+		if (!process.env.SECRET_KEY) {
+			return next(new Error('secret key missing'))
+		};
+
+		// Verify token and get user details
+		const data = jwt.verify(token.split(' ')[1], process.env.SECRET_KEY) as {
+			id: string;
+			email: string;
+		}
+
+		// Get user details from db
+		const user = await User.findById(data.id);
+
+		// Make sure a user exists with provided id
+		if (!user) {
+			return next(new Error('Authentication error'))
+		}
+
+		// Assign and save user details in socket object
+		socket.user = user;
+
+		// Go ahead
+		next();
+	} catch {
+		next(new Error('Authentication error'));
+	}
+}).on('connection', (socket) => {
 	// Event handler for join board (room)
 	socket.on(
 		SocketEventsEnum.boardsJoin,

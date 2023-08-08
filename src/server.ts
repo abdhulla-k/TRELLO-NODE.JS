@@ -29,6 +29,8 @@ import User from './models/user';
 import * as usersController from './controllers/users';
 import * as authMiddleware from './middlewares/auth';
 import * as boardsController from './controllers/boards';
+import * as columnsController from './controllers/columns';
+
 import { SocketEventsEnum } from './types/socketEvents.enum';
 import { Socket } from './types/socket.interfact';
 
@@ -78,6 +80,13 @@ app.get(
 	'/api/boards/:boardId',
 	authMiddleware.verifyToken,
 	boardsController.getBoard,
+);
+
+// Get columns of a specific board
+app.get(
+	'/api/boards/:boardId/columns',
+	authMiddleware.verifyToken,
+	columnsController.getColumns,
 );
 
 // Create new board

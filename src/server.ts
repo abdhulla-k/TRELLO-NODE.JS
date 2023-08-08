@@ -145,6 +145,14 @@ io.use(async (socket: Socket, next) => {
 			boardsController.leaveBoard(io, socket, data);
 		}
 	)
+
+	// Event handler for create board
+	socket.on(
+		SocketEventsEnum.columnsCreate,
+		(data) => {
+			columnsController.createColumn(io, socket, data);
+		}
+	)
 });
 
 // Connect with mongodb and make the application listenable

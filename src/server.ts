@@ -30,6 +30,7 @@ import * as usersController from './controllers/users';
 import * as authMiddleware from './middlewares/auth';
 import * as boardsController from './controllers/boards';
 import * as columnsController from './controllers/columns';
+import * as tasksController from './controllers/tasks';
 
 import { SocketEventsEnum } from './types/socketEvents.enum';
 import { Socket } from './types/socket.interfact';
@@ -87,6 +88,13 @@ app.get(
 	'/api/boards/:boardId/columns',
 	authMiddleware.verifyToken,
 	columnsController.getColumns,
+);
+
+// Get tasks of a specific board
+app.get(
+	'/api/boards/:boardId/tasks',
+	authMiddleware.verifyToken,
+	tasksController.getTasks,
 );
 
 // Create new board

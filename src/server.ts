@@ -161,6 +161,18 @@ io.use(async (socket: Socket, next) => {
 			columnsController.createColumn(io, socket, data);
 		}
 	)
+
+	// Event handler for create task
+	socket.on(
+		SocketEventsEnum.tasksCreate,
+		(data) => {
+			tasksController.createTask(
+				io,
+				socket,
+				data,
+			)
+		}
+	)
 });
 
 // Connect with mongodb and make the application listenable

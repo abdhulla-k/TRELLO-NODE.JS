@@ -50,7 +50,7 @@ export const createColumn = async (
     const newColumn = new ColumnModel({
       title: data.title,
       boardId: data.boardId,
-      userId: data.userId,
+      userId: socket.user.id,
     })
 
     // Save the document in db

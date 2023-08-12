@@ -185,6 +185,18 @@ io.use(async (socket: Socket, next) => {
 			)
 		}
 	)
+
+	// Evnet handler to delete a board
+	socket.on(
+		SocketEventsEnum.boardsDelete,
+		(data) => {
+			boardsController.deleteBoard(
+				io,
+				socket,
+				data,
+			)
+		}
+	)
 });
 
 // Connect with mongodb and make the application listenable

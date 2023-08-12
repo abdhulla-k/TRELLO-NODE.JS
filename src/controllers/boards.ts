@@ -148,3 +148,34 @@ export const updateBoard = async (
     )
   }
 }
+
+export const deleteBoard = async (
+  io: Server,
+  socket: Socket,
+  data: {
+    boardId: string,
+  }
+) => {
+  try {
+    // Make sure user authorized
+    if (!socket.user) {
+      socket.emit(
+        SocketEventsEnum.boardsDeleteFailure,
+        'User is not authorized',
+      );
+      return;
+    }
+
+    // Delete user
+    await BoardModel.findByIdAndDelete(data.boardId);
+
+    // Notify success
+    io.to(data.boardId).emit(SocketEventsEnum.boardsDeleteSuccess)
+  } catch (err) {
+    // Notify failure
+    socket.emit(
+      SocketEventsEnum.boardsDeleteFailure,
+      getErrorMessage(err),
+    );
+  }
+}

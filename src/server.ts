@@ -142,7 +142,11 @@ io.use(async (socket: Socket, next) => {
 	socket.on(
 		SocketEventsEnum.boardsJoin,
 		(data) => {
-			boardsController.joinBoard(io, socket, data);
+			boardsController.joinBoard(
+				io,
+				socket,
+				data
+			);
 		}
 	);
 
@@ -150,7 +154,11 @@ io.use(async (socket: Socket, next) => {
 	socket.on(
 		SocketEventsEnum.boardsLeave,
 		(data) => {
-			boardsController.leaveBoard(io, socket, data);
+			boardsController.leaveBoard(
+				io,
+				socket,
+				data
+			);
 		}
 	)
 
@@ -158,7 +166,11 @@ io.use(async (socket: Socket, next) => {
 	socket.on(
 		SocketEventsEnum.columnsCreate,
 		(data) => {
-			columnsController.createColumn(io, socket, data);
+			columnsController.createColumn(
+				io,
+				socket,
+				data
+			);
 		}
 	)
 
@@ -203,6 +215,18 @@ io.use(async (socket: Socket, next) => {
 		SocketEventsEnum.columnsDelete,
 		(data) => {
 			columnsController.deleteColumn(
+				io,
+				socket,
+				data,
+			)
+		}
+	)
+
+	// Event handler for update column
+	socket.on(
+		SocketEventsEnum.columnsUpdate,
+		(data) => {
+			columnsController.updateColumn(
 				io,
 				socket,
 				data,

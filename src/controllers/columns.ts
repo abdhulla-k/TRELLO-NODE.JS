@@ -82,6 +82,7 @@ export const deleteColumn = async (
         SocketEventsEnum.columnsDeleteFailure,
         'User is not authorized',
       )
+      return;
     }
 
     // Delete the column
@@ -96,6 +97,48 @@ export const deleteColumn = async (
     // Send error message
     socket.emit(
       SocketEventsEnum.columnsDeleteFailure,
+      getErrorMessage(err),
+    )
+  }
+}
+
+export const updateColumn = async (
+  io: Server,
+  socket: Socket,
+  data: {
+    columnId: string,
+    boardId: string,
+    fields: {
+      title: string,
+    }
+  }
+) => {
+  try {
+    // Make sure user authorized
+    if (!socket.user) {
+      socket.emit(
+        SocketEventsEnum.columnsUpdateFailure,
+        'User is not authorized',
+      )
+      return;
+    }
+
+    // Update column
+    const updateColumn = await ColumnModel.findByIdAndUpdate(
+      data.columnId,
+      data.fields,
+      { new: true },
+    )
+
+    // Notify all users
+    io.to(data.boardId).emit(
+      SocketEventsEnum.columnsUpdateSuccess,
+      updateColumn,
+    )
+  } catch (err) {
+    // Send error response
+    socket.emit(
+      SocketEventsEnum.columnsUpdateFailure,
       getErrorMessage(err),
     )
   }

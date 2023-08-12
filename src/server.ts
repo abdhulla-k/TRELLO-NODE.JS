@@ -173,6 +173,18 @@ io.use(async (socket: Socket, next) => {
 			)
 		}
 	)
+
+	// Event handler to update board
+	socket.on(
+		SocketEventsEnum.boardsUpdate,
+		(data) => {
+			boardsController.updateBoard(
+				io,
+				socket,
+				data,
+			)
+		}
+	)
 });
 
 // Connect with mongodb and make the application listenable

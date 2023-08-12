@@ -69,3 +69,34 @@ export const createColumn = async (
     );
   }
 }
+
+export const deleteColumn = async (
+  io: Server,
+  socket: Socket,
+  data: { columnId: string, boardId: string },
+) => {
+  try {
+    // Make sure user authorized
+    if (!socket.user) {
+      socket.emit(
+        SocketEventsEnum.columnsDeleteFailure,
+        'User is not authorized',
+      )
+    }
+
+    // Delete the column
+    await ColumnModel.findByIdAndDelete(data.columnId);
+
+    // notify all users
+    io.to(data.boardId).emit(
+      SocketEventsEnum.columnsDeleteSuccess,
+      data.columnId,
+    );
+  } catch (err) {
+    // Send error message
+    socket.emit(
+      SocketEventsEnum.columnsDeleteFailure,
+      getErrorMessage(err),
+    )
+  }
+}

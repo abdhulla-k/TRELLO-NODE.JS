@@ -197,6 +197,18 @@ io.use(async (socket: Socket, next) => {
 			)
 		}
 	)
+
+	// Event handler to delete a column
+	socket.on(
+		SocketEventsEnum.columnsDelete,
+		(data) => {
+			columnsController.deleteColumn(
+				io,
+				socket,
+				data,
+			)
+		}
+	)
 });
 
 // Connect with mongodb and make the application listenable

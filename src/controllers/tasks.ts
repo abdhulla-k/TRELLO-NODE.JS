@@ -52,6 +52,7 @@ export const createTask = async (
     const newTask = new TaskModel({
       title: data.title,
       boardId: data.boardId,
+      columnId: data.columnId,
       userId: socket.user.id,
     })
 

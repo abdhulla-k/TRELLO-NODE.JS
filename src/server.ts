@@ -233,6 +233,18 @@ io.use(async (socket: Socket, next) => {
 			)
 		}
 	)
+
+	// Event handler for update task
+	socket.on(
+		SocketEventsEnum.tasksUpdate,
+		(data) => {
+			tasksController.updateTask(
+				io,
+				socket,
+				data,
+			)
+		}
+	)
 });
 
 // Connect with mongodb and make the application listenable

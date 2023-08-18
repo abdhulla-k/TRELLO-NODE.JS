@@ -72,3 +72,47 @@ export const createTask = async (
     );
   }
 }
+
+export const updateTask = async (
+  io: Server,
+  socket: Socket,
+  data: {
+    boardId: string,
+    taskId: string,
+    fields: {
+      title?: string;
+      description?: string;
+      columnId?: string
+    }
+  }
+) => {
+  try {
+    // Make sure user authorized
+    if (!socket.user) {
+      socket.emit(
+        SocketEventsEnum.tasksUpdateFailure,
+        'User is not authorized',
+      )
+      return;
+    }
+
+    // Update column
+    const updatedTask = await TaskModel.findByIdAndUpdate(
+      data.taskId,
+      data.fields,
+      { new: true },
+    )
+
+    // Notify all users
+    io.to(data.boardId).emit(
+      SocketEventsEnum.tasksUpdateSuccess,
+      updatedTask,
+    )
+  } catch (err) {
+    // Send error response
+    socket.emit(
+      SocketEventsEnum.tasksUpdateFailure,
+      getErrorMessage(err),
+    )
+  }
+}

@@ -116,3 +116,37 @@ export const updateTask = async (
     )
   }
 }
+
+export const deleteTask = async (
+  io: Server,
+  socket: Socket,
+  data: { taskId: string, boardId: string }
+) => {
+  try {
+    // Make sure user authorized
+    if (!socket.user) {
+      socket.emit(
+        SocketEventsEnum.tasksDeleteFailure,
+        'User is not authorized',
+      )
+      return;
+    }
+
+    // Delete task
+    const updatedTask = await TaskModel.findByIdAndDelete(
+      data.taskId
+    )
+
+    // Notify all users
+    io.to(data.boardId).emit(
+      SocketEventsEnum.tasksDeleteSuccess,
+      data.taskId,
+    )
+  } catch (err) {
+    // Send error response
+    socket.emit(
+      SocketEventsEnum.tasksUpdateFailure,
+      getErrorMessage(err),
+    )
+  }
+}

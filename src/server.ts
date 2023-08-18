@@ -245,6 +245,18 @@ io.use(async (socket: Socket, next) => {
 			)
 		}
 	)
+
+	// Event handler for delete task
+	socket.on(
+		SocketEventsEnum.tasksDelete,
+		(data) => {
+			tasksController.deleteTask(
+				io,
+				socket,
+				data,
+			)
+		}
+	)
 });
 
 // Connect with mongodb and make the application listenable

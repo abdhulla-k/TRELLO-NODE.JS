@@ -25,6 +25,9 @@ import cors from 'cors';
 // Import user model
 import User from './models/user';
 
+// Import path module
+const path = require('path');
+
 // Import controllers
 import * as usersController from './controllers/users';
 import * as authMiddleware from './middlewares/auth';
@@ -51,9 +54,6 @@ app.use(cors());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.get('/', (req, res, next) => {
-	res.send('welcome to application');
-});
 
 // Define routes
 // User register
@@ -257,6 +257,12 @@ io.use(async (socket: Socket, next) => {
 			)
 		}
 	)
+});
+
+// Point static path to dist
+app.use(express.static(path.join(__dirname, 'front')));
+app.get('/', (req, res) => {
+	res.sendFile('index.html');
 });
 
 // Connect with mongodb and make the application listenable

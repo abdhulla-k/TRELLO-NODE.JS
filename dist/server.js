@@ -53,6 +53,8 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const cors_1 = __importDefault(require("cors"));
 // Import user model
 const user_1 = __importDefault(require("./models/user"));
+// Import path module
+const path = require('path');
 // Import controllers
 const usersController = __importStar(require("./controllers/users"));
 const authMiddleware = __importStar(require("./middlewares/auth"));
@@ -71,9 +73,6 @@ const io = new socket_io_1.Server(httpServer, {
 app.use((0, cors_1.default)());
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: true }));
-app.get('/', (req, res, next) => {
-    res.send('welcome to application');
-});
 // Define routes
 // User register
 app.post('/api/users', usersController.register);
@@ -159,6 +158,11 @@ io.use((socket, next) => __awaiter(void 0, void 0, void 0, function* () {
     socket.on(socketEvents_enum_1.SocketEventsEnum.tasksDelete, (data) => {
         tasksController.deleteTask(io, socket, data);
     });
+});
+// Point static path to dist
+app.use(express_1.default.static(path.join(__dirname, 'front')));
+app.get('/', (req, res) => {
+    res.sendFile('index.html');
 });
 // Connect with mongodb and make the application listenable
 mongoose_1.default.connect(process.env.MONGODB_URL ? process.env.MONGODB_URL : '')

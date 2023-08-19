@@ -162,14 +162,14 @@ io.use((socket, next) => __awaiter(void 0, void 0, void 0, function* () {
 // Point static path to dist
 app.use(express_1.default.static(path.join(__dirname, 'front')));
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'front', 'index.html'));
+    res.sendFile('index.html');
 });
 // Connect with mongodb and make the application listenable
 mongoose_1.default.connect(process.env.MONGODB_URL ? process.env.MONGODB_URL : '')
     .then(() => {
     console.log('connected mongodb');
-    httpServer.listen(process.env.PORT ? process.env.PORT : 5000, () => {
-        console.log(`app is running in port ${process.env.PORT ? process.env.PORT : 5000}`);
+    httpServer.listen(process.env.PORT ? process.env.PORT : 4000, () => {
+        console.log(`app is running in port ${process.env.PORT ? process.env.PORT : 4000}`);
     });
 })
     .catch(err => {
